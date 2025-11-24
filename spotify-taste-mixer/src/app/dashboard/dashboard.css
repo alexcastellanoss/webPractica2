@@ -1,0 +1,21 @@
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 10px;
+    margin: 10px;
+    height: 87vh;
+}
+
+.menu-tracks {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    color: rgb(0, 0, 0);
+}
+
+.tracks-display {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    color: rgb(0, 0, 0);
+}

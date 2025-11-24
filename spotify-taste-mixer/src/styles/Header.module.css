@@ -1,0 +1,14 @@
+.navPrincipal {
+    background-color: rgb(255, 255, 255);
+    margin: 10px;
+    border-radius: 8px;
+}
+
+.navPrincipal ul {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: black;
+}
