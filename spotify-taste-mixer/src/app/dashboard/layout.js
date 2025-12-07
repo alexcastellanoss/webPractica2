@@ -1,10 +1,14 @@
 import Header from "@/components/Header";
+import "./dashboard.css";
 
 export default function DashboardLayout({ children }) {
     return (
-        <div>
+        <div className="dashboard-layout">
             <Header></Header>
-            {children}
+            {/*Poner aquí el menú*/}
+            <div className="dashboard-main">
+                {children}
+            </div>
         </div>
     );
 }

@@ -1,21 +1,37 @@
+/*Page*/
+
 .dashboard {
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 10px;
-    margin: 10px;
-    height: 87vh;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    height: 100%;
 }
 
 .menu-tracks {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    color: rgb(0, 0, 0);
+    color: #121212;
 }
 
 .tracks-display {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    color: rgb(0, 0, 0);
+    color: #121212;
+}
+
+/*Layout*/
+
+.dashboard-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.dashboard-main {
+    height: 100%;
 }

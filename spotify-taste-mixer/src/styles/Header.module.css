@@ -1,5 +1,5 @@
 .navPrincipal {
-    background-color: rgb(255, 255, 255);
+    background-color: #ffffff;
     margin: 10px;
     border-radius: 8px;
 }
@@ -10,5 +10,5 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    color: black;
+    color: #121212;
 }
