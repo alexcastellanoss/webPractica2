@@ -1,3 +1,5 @@
+import { getAccessToken, refreshAccessToken } from "./auth";
+
 export async function generatePlaylist(preferences) {
   const { artists, genres, decades, popularity } = preferences;
   const token = getAccessToken();
@@ -52,4 +54,29 @@ export async function generatePlaylist(preferences) {
   ).slice(0, 30);
 
   return uniqueTracks;
+}
+
+export async function spotifyRequest(url) {
+  let token = getAccessToken();
+
+  // Si no hay token o está expirado, intentar refrescar
+  if (!token) {
+    token = await refreshAccessToken();
+    if (!token) {
+      window.location.href = "/";
+      return null;
+    }
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error ${response.status}: ${response.statusText}`);
+  }
+
+  return response.json();
 }

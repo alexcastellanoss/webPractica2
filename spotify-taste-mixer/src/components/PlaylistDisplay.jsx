@@ -1,13 +1,17 @@
 import TrackCard from "./TrackCard";
 
-export default function PlaylistDisplay({ tracks }) {
+export default function PlaylistDisplay({ }) {
     if (!tracks || tracks.length === 0) {
-        return <p>No hay canciones</p>
+        return <p className="text-sm text-black">No hay resultados</p>;
     }
 
     return (
-        <div className="playlist-display">
-            {tracks.map((track) => (<TrackCard key={track.id} track={track} />))}
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {tracks.map((track) => (
+                <TrackCard
+
+                />
+            ))}
         </div>
-    )
+    );
 }

@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { isAuthenticated, getSpotifyAuthUrl } from '@/lib/auth';
-import './page.css';
 
 export default function Home() {
   const router = useRouter();
@@ -20,13 +19,16 @@ export default function Home() {
   };
 
   return (
-    <div className='inicio'>
-      <div className='inicio-text'>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-10 bg-linear-to-br from-[#1DB954] to-[#191414]">
+      <div className="font-bold text-white text-4xl md:text-6xl drop-shadow-lg text-center">
         🎵 Spotify Taste Mixer
       </div>
-      <div className='inicio-login'>
-        <button onClick={handleLogin}>Login</button>
-      </div>
+
+      <button
+        onClick={handleLogin}
+        className="px-10 py-3 rounded-full bg-white text-[#1DB954] text-2xl font-semibold shadow-lg hover:scale-105 hover:shadow-xl transition-transform">
+        Login
+      </button>
     </div>
   );
 }
