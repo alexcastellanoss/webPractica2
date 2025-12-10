@@ -136,7 +136,28 @@ export default function DashboardPage() {
     }
 
     async function handleGeneratePlaylist() {
+        try {
+            setPlaylistLoading(true);
+            setPlaylistError('');
 
+            const recommended = await getPlaylist();
+            const seedTracks = preferences.tracks || [];
+            const all = [...seedTracks, ...recommended];
+            const uniqueById = Array.from(
+                new Map(all.map((t) => [t.id, t])).values()
+            ).slice(0, 30)
+
+            setPlaylist(uniqueById);
+
+        } catch (err) {
+            console.error(err);
+            setPlaylistError('Error al generar la playlist. Intenta de nuevo.');
+        } finally {
+            setPlaylistLoading(false);
+        }
+    }
+
+    async function handleRefreshPlaylist() {
         try {
             setPlaylistLoading(true);
             setPlaylistError('');
@@ -147,7 +168,9 @@ export default function DashboardPage() {
             const uniqueById = Array.from(
                 new Map(all.map((t) => [t.id, t])).values()
             )
-            setPlaylist(uniqueById);
+            const newPlaylist = otraPlaylist(uniqueById, uniqueById.length);
+            const newPlaylist2 = newPlaylist.slice(0, 30)
+            setPlaylist(newPlaylist2);
 
         } catch (err) {
             console.error(err);
@@ -162,29 +185,12 @@ export default function DashboardPage() {
         return shuffled.slice(0, Math.min(size, shuffled.length));
     }
 
-    function handleRefreshPlaylist() {
-        try {
-            setPlaylistLoading(true);
-            setPlaylistError('');
-
-            setPlaylist((prev) => {
-                if (!prev || prev.length === 0) return prev;
-                return otraPlaylist(prev, prev.length);
-            });
-        } catch (err) {
-            console.error(err);
-            setPlaylistError('Error al refrescar la playlist.');
-        } finally {
-            setPlaylistLoading(false);
-        }
-    }
-
     return (
         <div className="min-h-screen bg-gray-100">
             <Header />
 
-            <main className="px-2 pb-2">
-                <div className="grid grid-cols-[1fr_4fr] gap-2">
+            <main className="px-3 pb-4 md:px-4">
+                <div className="max-w-6xl mx-auto grid gap-4 md:grid-cols-[1fr_3fr]">
                     <section className="bg-white rounded-lg p-4">
                         <h2 className="font-semibold mb-3 text-black">Preferencias</h2>
 

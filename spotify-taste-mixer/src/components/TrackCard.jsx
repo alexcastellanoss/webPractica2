@@ -2,9 +2,9 @@
 
 export default function TrackCard({ track, onRemove, onToggleFavorite, isFavorite }) {
     return (
-        <div className="p-0.5 rounded-2xl bg-linear-to-br from-emerald-500/80 via-transparent to-emerald-500/80">
-            <div className="bg-[#181818] rounded-2xl p-3">
-                <div className="grid grid-cols-[64px_1fr] gap-3 items-center text-white">
+        <div className="h-full p-0.5 rounded-2xl bg-linear-to-br from-emerald-500/80 via-transparent to-emerald-500/80">
+            <div className="h-full bg-[#181818] rounded-2xl p-3">
+                <div className="h-full grid grid-cols-[64px_1fr] gap-3 items-center text-white">
                     {track.imageUrl && (
                         <img
                             src={track.imageUrl}
@@ -13,7 +13,7 @@ export default function TrackCard({ track, onRemove, onToggleFavorite, isFavorit
                         />
                     )}
 
-                    <div className="space-y-2">
+                    <div className="h-full flex flex-col justify-between space-y-2">
                         <div className="space-y-1">
                             <h3 className="text-sm font-semibold m-0">{track.name}</h3>
                             <p className="text-xs text-gray-300 m-0">{track.artist}</p>
