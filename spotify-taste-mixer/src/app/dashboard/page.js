@@ -8,6 +8,9 @@ import Menu from '@/components/Menu';
 import ArtistWidget from '@/components/widgets/ArtistWidget';
 import TrackWidget from '@/components/widgets/TrackWidget';
 import GenreWidget from '@/components/widgets/GenreWidget';
+import DecadeWidget from '@/components/widgets/DecadeWidget';
+import MoodWidget from '@/components/widgets/MoodWidget';
+import PopularityWidget from '@/components/widgets/PopularityWidget';
 
 import PlaylistDisplay from '@/components/PlaylistDisplay';
 import { generatePlaylist } from '@/lib/spotify';
@@ -45,6 +48,28 @@ export default function DashboardPage() {
         }
     }, []);
 
+    function isTrackFavorite(id) {
+        return favoriteTracks.some((t) => t.id === id);
+    }
+
+    function handleToggleFavorite(track) {
+        const exists = favoriteTracks.some((t) => t.id === track.id);
+
+        let updated;
+        if (exists) {
+            updated = favoriteTracks.filter((t) => t.id !== track.id);
+        } else {
+            updated = [...favoriteTracks, track];
+        }
+
+        setFavoriteTracks(updated);
+        localStorage.setItem('favorite_tracks', JSON.stringify(updated));
+    }
+
+    function handleRemoveTrack(trackId) {
+        setPlaylist((prev) => prev.filter((t) => t.id !== trackId));
+    }
+
     function handleArtistsChange(newArtists) {
         setPreferences((prev) => ({
             ...prev,
@@ -63,6 +88,27 @@ export default function DashboardPage() {
         setPreferences((prev) => ({
             ...prev,
             genres: newGenres,
+        }));
+    }
+
+    function handleDecadesChange(newDecades) {
+        setPreferences((prev) => ({
+            ...prev,
+            decades: newDecades,
+        }));
+    }
+
+    function handleMoodChange(newMood) {
+        setPreferences((prev) => ({
+            ...prev,
+            mood: newMood,
+        }));
+    }
+
+    function handlePopularityChange(newPopularity) {
+        setPreferences((prev) => ({
+            ...prev,
+            popularity: newPopularity,
         }));
     }
 
@@ -111,6 +157,28 @@ export default function DashboardPage() {
         }
     }
 
+    function otraPlaylist(tracks, size) {
+        const shuffled = [...tracks].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, Math.min(size, shuffled.length));
+    }
+
+    function handleRefreshPlaylist() {
+        try {
+            setPlaylistLoading(true);
+            setPlaylistError('');
+
+            setPlaylist((prev) => {
+                if (!prev || prev.length === 0) return prev;
+                return otraPlaylist(prev, prev.length);
+            });
+        } catch (err) {
+            console.error(err);
+            setPlaylistError('Error al refrescar la playlist.');
+        } finally {
+            setPlaylistLoading(false);
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gray-100">
             <Header />
@@ -131,6 +199,9 @@ export default function DashboardPage() {
                             {activeWidget === 'artists' && 'Artistas'}
                             {activeWidget === 'tracks' && 'Canciones'}
                             {activeWidget === 'genres' && 'Géneros'}
+                            {activeWidget === 'decades' && 'Décadas'}
+                            {activeWidget === 'mood' && 'Mood'}
+                            {activeWidget === 'popularity' && 'Popularidad'}
                         </h2>
 
                         {activeWidget === 'artists' && (
@@ -151,6 +222,27 @@ export default function DashboardPage() {
                             <GenreWidget
                                 selectedGenres={preferences.genres}
                                 onChangeSelectedGenres={handleGenresChange}
+                            />
+                        )}
+
+                        {activeWidget === 'decades' && (
+                            <DecadeWidget
+                                selectedDecades={preferences.decades}
+                                onChangeSelectedDecades={handleDecadesChange}
+                            />
+                        )}
+
+                        {activeWidget === 'mood' && (
+                            <MoodWidget
+                                moodConfig={preferences.mood}
+                                onChangeMood={handleMoodChange}
+                            />
+                        )}
+
+                        {activeWidget === 'popularity' && (
+                            <PopularityWidget
+                                popularityRange={preferences.popularity}
+                                onChangePopularity={handlePopularityChange}
                             />
                         )}
 
@@ -186,6 +278,10 @@ export default function DashboardPage() {
                             )}
 
                             <PlaylistDisplay
+                                tracks={playlist}
+                                onRemoveTrack={handleRemoveTrack}
+                                onToggleFavorite={handleToggleFavorite}
+                                isTrackFavorite={isTrackFavorite}
                             />
                         </div>
                     </section>
