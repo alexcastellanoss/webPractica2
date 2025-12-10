@@ -1,5 +1,6 @@
 'use client';
 
+// 3 botones predefinidos para popularidad
 const PRESETS = [
     {
         id: 'underground',
@@ -21,9 +22,11 @@ const PRESETS = [
     },
 ];
 
+// Seleccionar y ajustar la popularidad
 export default function PopularityWidget({ popularityRange, onChangePopularity }) {
     const { min, max } = popularityRange;
 
+    // Aplicar preset de popularidad (botón)
     function applyPreset(preset) {
         onChangePopularity({
             min: preset.range.min,
@@ -31,6 +34,7 @@ export default function PopularityWidget({ popularityRange, onChangePopularity }
         });
     }
 
+    // Actualizar un campo específico de la popularidad (slider o input)
     function updateField(field, value) {
         const num = Number(value);
         if (Number.isNaN(num)) return;
@@ -48,6 +52,7 @@ export default function PopularityWidget({ popularityRange, onChangePopularity }
         });
     }
 
+    // Determinar si el rango actual coincide con algún preset, para resaltar el botón
     const currentPresetId = (() => {
         if (min === 0 && max === 50) return 'underground';
         if (min === 50 && max === 80) return 'popular';
@@ -61,6 +66,7 @@ export default function PopularityWidget({ popularityRange, onChangePopularity }
                 Elige el tipo de popularidad que prefieres o ajusta manualmente el rango (0-100).
             </p>
 
+            {/*Botones de presets de popularidad*/}
             <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
                 {PRESETS.map((preset) => {
                     const isActive = currentPresetId === preset.id;
@@ -85,6 +91,7 @@ export default function PopularityWidget({ popularityRange, onChangePopularity }
                 })}
             </div>
 
+            {/*Sliders e inputs para ajustar la popularidad*/}
             <div className="space-y-3">
                 <div className="flex items-center gap-3">
                     <div className="flex flex-col flex-1">

@@ -1,10 +1,12 @@
+// Slider para MoodWidget.jsx
 export default function SliderRow({ label, value, onChange }) {
     return (
         <div>
             <div className="flex justify-between mb-1">
-                <span className="text-sm text-black">{label}</span>
-                <span className="text-xs text-black">{value}</span>
+                <div className="text-sm text-black">{label}</div>
+                <div className="text-xs text-black">{value}</div>
             </div>
+            {/* Slider que avisa al padre cuando cambia el valor */}
             <input
                 type="range"
                 min="0"

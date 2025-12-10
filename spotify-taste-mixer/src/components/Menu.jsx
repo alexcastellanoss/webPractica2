@@ -1,5 +1,6 @@
 'use client';
 
+// Widgets
 const opciones = [
     { id: 'artists', label: 'Artistas' },
     { id: 'tracks', label: 'Canciones' },
@@ -9,6 +10,7 @@ const opciones = [
     { id: 'popularity', label: 'Popularidad' },
 ];
 
+// Menú donde se despliegan los widgets
 export default function Menu({ activeWidget, onChangeWidget }) {
     return (
         <nav className="space-y-2">

@@ -2,6 +2,7 @@
 
 import SliderRow from "../SliderRow";
 
+// 4 botones predefinidos para moods
 const PRESETS = [
     {
         id: 'happy',
@@ -29,9 +30,11 @@ const PRESETS = [
     },
 ];
 
+// Seleccionar y ajustar el mood
 export default function MoodWidget({ moodConfig, onChangeMood }) {
     const { label, energy, valence, danceability, acousticness } = moodConfig;
 
+    // Aplicar preset de mood (botón)
     function applyPreset(preset) {
         onChangeMood({
             label: preset.id,
@@ -39,6 +42,7 @@ export default function MoodWidget({ moodConfig, onChangeMood }) {
         });
     }
 
+    // Actualizar un campo específico del mood (slider)
     function updateField(field, value) {
         const num = Number(value);
         if (Number.isNaN(num)) return;
@@ -55,6 +59,7 @@ export default function MoodWidget({ moodConfig, onChangeMood }) {
                 Elige un mood general o ajusta manualmente los sliders.
             </p>
 
+            {/*Botones de presets de mood*/}
             <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
                 {PRESETS.map((preset) => {
                     const isActive = label === preset.id;
@@ -79,6 +84,7 @@ export default function MoodWidget({ moodConfig, onChangeMood }) {
                 })}
             </div>
 
+            {/*Sliders para ajustar el mood*/}
             <div className="space-y-4">
                 <SliderRow
                     label="Energy"

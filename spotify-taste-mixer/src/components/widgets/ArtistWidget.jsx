@@ -3,12 +3,17 @@
 import { useState } from 'react';
 import { spotifyRequest } from '@/lib/spotify'
 
+// Buscar y seleccionar artistas
 export default function ArtistWidget({ selectedArtists, onChangeSelectedArtists }) {
+    // Texto del buscador
     const [query, setQuery] = useState('');
+    // Resultados de la búsqueda
     const [results, setResults] = useState([]);
+    // Estado de carga y error
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    //Buscar artistas en Spotify
     async function handleSearch(e) {
         e.preventDefault();
         if (!query.trim()) return;
@@ -29,10 +34,12 @@ export default function ArtistWidget({ selectedArtists, onChangeSelectedArtists 
         }
     }
 
+    // Comprobar si un artista está seleccionado
     function isSelected(id) {
         return selectedArtists.some((a) => a.id === id);
     }
 
+    // Añadir o quitar artista de la selección
     function toggleArtist(artist) {
         let newSelection;
         if (isSelected(artist.id)) {
@@ -89,13 +96,14 @@ export default function ArtistWidget({ selectedArtists, onChangeSelectedArtists 
                                 className="w-10 h-10 rounded-full object-cover"
                             />
                         )}
-                        <span className="text-sm font-medium text-black">
+                        <div className="text-sm font-medium text-black">
                             {artist.name}
-                        </span>
+                        </div>
                     </button>
                 ))}
             </div>
 
+            {/*Mostrar artistas seleccionados*/}
             {selectedArtists.length > 0 && (
                 <div>
                     <h3 className="text-sm font-semibold text-black mb-1">

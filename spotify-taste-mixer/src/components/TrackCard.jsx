@@ -1,9 +1,11 @@
 'use client';
 
+// Canción individual
 export default function TrackCard({ track, onRemove, onToggleFavorite, isFavorite }) {
     return (
         <div className="h-full p-0.5 rounded-2xl bg-linear-to-br from-emerald-500/80 via-transparent to-emerald-500/80">
             <div className="h-full bg-[#181818] rounded-2xl p-3">
+                {/*Layout de la canción*/}
                 <div className="h-full grid grid-cols-[64px_1fr] gap-3 items-center text-white">
                     {track.imageUrl && (
                         <img
@@ -20,6 +22,7 @@ export default function TrackCard({ track, onRemove, onToggleFavorite, isFavorit
                         </div>
 
                         <div className="flex flex-wrap items-center gap-2 text-xs">
+                            {/*Añadir/eliminar favoritos*/}
                             <button
                                 type="button"
                                 onClick={onToggleFavorite}
@@ -30,10 +33,10 @@ export default function TrackCard({ track, onRemove, onToggleFavorite, isFavorit
                                         : 'border-gray-500 bg-transparent text-gray-300 hover:bg-white/10')
                                 }
                             >
-                                <span>{isFavorite ? '★' : '☆'}</span>
-                                <span>Favorito</span>
+                                <div>{isFavorite ? '★' : '☆'}</div>
+                                <div>Favorito</div>
                             </button>
-
+                            {/*Eliminar de la playlist*/}
                             <button
                                 type="button"
                                 onClick={onRemove}

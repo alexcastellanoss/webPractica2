@@ -15,9 +15,12 @@ import PopularityWidget from '@/components/widgets/PopularityWidget';
 import PlaylistDisplay from '@/components/PlaylistDisplay';
 import { generatePlaylist } from '@/lib/spotify';
 
+// Página principal
 export default function DashboardPage() {
 
+    // Widget seleccionado
     const [activeWidget, setActiveWidget] = useState('artists');
+    // Requisitos para la playlist
     const [preferences, setPreferences] = useState({
         artists: [],
         tracks: [],
@@ -32,11 +35,15 @@ export default function DashboardPage() {
         },
         popularity: { min: 0, max: 100 },
     });
+    // Playlist a mostrar
     const [playlist, setPlaylist] = useState([]);
+    // Estado de carga  y errores (únicamente para el css)
     const [playlistLoading, setPlaylistLoading] = useState(false);
     const [playlistError, setPlaylistError] = useState('');
+    // Canciones favoritas
     const [favoriteTracks, setFavoriteTracks] = useState([]);
 
+    // Coger favoritos del localstorage al cargar la página
     useEffect(() => {
         try {
             const stored = JSON.parse(
@@ -48,10 +55,12 @@ export default function DashboardPage() {
         }
     }, []);
 
+    // Comprobar si la canción está en favoritos
     function isTrackFavorite(id) {
         return favoriteTracks.some((t) => t.id === id);
     }
 
+    // Añadir o quitar de favoritos
     function handleToggleFavorite(track) {
         const exists = favoriteTracks.some((t) => t.id === track.id);
 
@@ -66,10 +75,12 @@ export default function DashboardPage() {
         localStorage.setItem('favorite_tracks', JSON.stringify(updated));
     }
 
+    // Eliminar canción de la playlist
     function handleRemoveTrack(trackId) {
         setPlaylist((prev) => prev.filter((t) => t.id !== trackId));
     }
 
+    // Actualizar las preferencias
     function handleArtistsChange(newArtists) {
         setPreferences((prev) => ({
             ...prev,
@@ -112,6 +123,8 @@ export default function DashboardPage() {
         }));
     }
 
+    // Preparar las preferencias para pasarlo a lib/spotify.js
+    // Preparar los resultados a lo que recibe TrackWidget.jsx
     async function getPlaylist() {
         const apiPreferences = {
             artists: preferences.artists,
@@ -135,6 +148,7 @@ export default function DashboardPage() {
         return recommended;
     }
 
+    // Generar playlist
     async function handleGeneratePlaylist() {
         try {
             setPlaylistLoading(true);
@@ -143,6 +157,7 @@ export default function DashboardPage() {
             const recommended = await getPlaylist();
             const seedTracks = preferences.tracks || [];
             const all = [...seedTracks, ...recommended];
+            // Quitar duplicados y limitar a 30 canciones
             const uniqueById = Array.from(
                 new Map(all.map((t) => [t.id, t])).values()
             ).slice(0, 30)
@@ -157,6 +172,13 @@ export default function DashboardPage() {
         }
     }
 
+    // Mezclar y devolver otra playlist
+    function otraPlaylist(tracks, size) {
+        const shuffled = [...tracks].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, Math.min(size, shuffled.length));
+    }
+
+    // Refrescar playlist con las mismas preferencias
     async function handleRefreshPlaylist() {
         try {
             setPlaylistLoading(true);
@@ -168,9 +190,8 @@ export default function DashboardPage() {
             const uniqueById = Array.from(
                 new Map(all.map((t) => [t.id, t])).values()
             )
-            const newPlaylist = otraPlaylist(uniqueById, uniqueById.length);
-            const newPlaylist2 = newPlaylist.slice(0, 30)
-            setPlaylist(newPlaylist2);
+            const newPlaylist = otraPlaylist(uniqueById, 30)
+            setPlaylist(newPlaylist);
 
         } catch (err) {
             console.error(err);
@@ -178,11 +199,6 @@ export default function DashboardPage() {
         } finally {
             setPlaylistLoading(false);
         }
-    }
-
-    function otraPlaylist(tracks, size) {
-        const shuffled = [...tracks].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, Math.min(size, shuffled.length));
     }
 
     return (
@@ -210,6 +226,7 @@ export default function DashboardPage() {
                             {activeWidget === 'popularity' && 'Popularidad'}
                         </h2>
 
+                        {/* Renderizar solo el widget correspondiente*/}
                         {activeWidget === 'artists' && (
                             <ArtistWidget
                                 selectedArtists={preferences.artists}
@@ -252,6 +269,7 @@ export default function DashboardPage() {
                             />
                         )}
 
+                        {/*Playlist más botones*/}
                         <div className="border-t border-gray-200 pt-4 space-y-4">
                             <div className="flex items-center justify-between gap-2 flex-wrap">
                                 <h3 className="font-semibold text-black">
@@ -282,7 +300,7 @@ export default function DashboardPage() {
                             {playlistError && (
                                 <p className="text-sm text-red-600">{playlistError}</p>
                             )}
-
+                            {/*Componente para mostrar la lista de canciones*/}
                             <PlaylistDisplay
                                 tracks={playlist}
                                 onRemoveTrack={handleRemoveTrack}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { spotifyRequest } from '@/lib/spotify';
 
+// Buscar y seleccionar canciones
 export default function TrackWidget({ selectedTracks, onChangeSelectedTracks }) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
@@ -97,12 +98,12 @@ export default function TrackWidget({ selectedTracks, onChangeSelectedTracks }) 
                         )}
 
                         <div className="flex flex-col">
-                            <span className="text-sm font-medium text-black">
+                            <div className="text-sm font-medium text-black">
                                 {track.name}
-                            </span>
-                            <span className="text-xs text-black">
+                            </div>
+                            <div className="text-xs text-black">
                                 {track.artists?.map((a) => a.name).join(', ')}
-                            </span>
+                            </div>
                         </div>
                     </button>
                 ))}

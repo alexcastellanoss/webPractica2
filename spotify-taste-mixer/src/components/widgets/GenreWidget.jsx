@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+// Lista de géneros
 const ALL_GENRES = ['acoustic', 'afrobeat', 'alt-rock', 'alternative', 'ambient', 'anime', 'black-metal', 'bluegrass',
     'blues', 'bossanova', 'brazil', 'breakbeat', 'british', 'cantopop', 'chicago-house', 'children', 'chill', 'classical',
     'club', 'comedy', 'country', 'dance', 'dancehall', 'death-metal', 'deep-house', 'detroit-techno', 'disco', 'disney',
@@ -15,13 +16,17 @@ const ALL_GENRES = ['acoustic', 'afrobeat', 'alt-rock', 'alternative', 'ambient'
     'singer-songwriter', 'ska', 'sleep', 'songwriter', 'soul', 'soundtracks', 'spanish', 'study', 'summer', 'swedish', 'synth-pop',
     'tango', 'techno', 'trance', 'trip-hop', 'turkish', 'work-out', 'world-music']
 
+// Buscar y seleccionar géneros
 export default function GenreWidget({ selectedGenres, onChangeSelectedGenres }) {
+    // Texto del buscador
     const [filter, setFilter] = useState('');
 
+    // Filtrar géneros según el texto del buscador
     const filteredGenres = ALL_GENRES.filter((g) =>
         g.toLowerCase().includes(filter.toLowerCase())
     );
 
+    // Comprobar si un género está seleccionado
     function isSelected(genre) {
         return selectedGenres.includes(genre);
     }
